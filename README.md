@@ -6,7 +6,7 @@ Search and browse your [Navidrome](https://www.navidrome.org/) music library dir
 
 | Command | Description | View |
 | --- | --- | --- |
-| Search Music | Search artists, albums, and songs with recent search history | List |
+| Search | Search artists, albums, and songs with recent search history | List |
 | Recently Added Albums | Browse your newest albums with cover art | Grid |
 | Most Played Albums | Browse your most frequently played albums | Grid |
 
