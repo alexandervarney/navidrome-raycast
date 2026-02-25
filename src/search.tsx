@@ -1,4 +1,13 @@
-import { ActionPanel, Action, List, Icon, Color, LocalStorage, showToast, Toast } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  List,
+  Icon,
+  Color,
+  LocalStorage,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
@@ -41,10 +50,10 @@ export default function SearchCommand() {
     async (q: string) => {
       const trimmed = q.trim();
       if (!trimmed) return;
-      const updated = [trimmed, ...recentSearches.filter((s) => s !== trimmed)].slice(
-        0,
-        MAX_RECENT_SEARCHES,
-      );
+      const updated = [
+        trimmed,
+        ...recentSearches.filter((s) => s !== trimmed),
+      ].slice(0, MAX_RECENT_SEARCHES);
       setRecentSearches(updated);
       await saveRecentSearches(updated);
     },
@@ -83,7 +92,11 @@ export default function SearchCommand() {
     },
   );
 
-  const hasResults = data && (data.artists.length > 0 || data.albums.length > 0 || data.songs.length > 0);
+  const hasResults =
+    data &&
+    (data.artists.length > 0 ||
+      data.albums.length > 0 ||
+      data.songs.length > 0);
 
   return (
     <List
@@ -97,7 +110,10 @@ export default function SearchCommand() {
     >
       {!query.trim() ? (
         recentSearches.length > 0 ? (
-          <List.Section title="Recent Searches" subtitle={`${recentSearches.length}`}>
+          <List.Section
+            title="Recent Searches"
+            subtitle={`${recentSearches.length}`}
+          >
             {recentSearches.map((recent) => (
               <List.Item
                 key={recent}
@@ -147,7 +163,11 @@ export default function SearchCommand() {
       {data && data.artists.length > 0 && (
         <List.Section title="Artists" subtitle={`${data.artists.length}`}>
           {data.artists.map((artist) => (
-            <ArtistItem key={artist.id} artist={artist} onAction={() => addRecentSearch(query)} />
+            <ArtistItem
+              key={artist.id}
+              artist={artist}
+              onAction={() => addRecentSearch(query)}
+            />
           ))}
         </List.Section>
       )}
@@ -155,7 +175,11 @@ export default function SearchCommand() {
       {data && data.albums.length > 0 && (
         <List.Section title="Albums" subtitle={`${data.albums.length}`}>
           {data.albums.map((album) => (
-            <AlbumItem key={album.id} album={album} onAction={() => addRecentSearch(query)} />
+            <AlbumItem
+              key={album.id}
+              album={album}
+              onAction={() => addRecentSearch(query)}
+            />
           ))}
         </List.Section>
       )}
@@ -163,7 +187,11 @@ export default function SearchCommand() {
       {data && data.songs.length > 0 && (
         <List.Section title="Songs" subtitle={`${data.songs.length}`}>
           {data.songs.map((song) => (
-            <SongItem key={song.id} song={song} onAction={() => addRecentSearch(query)} />
+            <SongItem
+              key={song.id}
+              song={song}
+              onAction={() => addRecentSearch(query)}
+            />
           ))}
         </List.Section>
       )}
@@ -171,7 +199,13 @@ export default function SearchCommand() {
   );
 }
 
-function ArtistItem({ artist, onAction }: { artist: Artist; onAction: () => void }) {
+function ArtistItem({
+  artist,
+  onAction,
+}: {
+  artist: Artist;
+  onAction: () => void;
+}) {
   const url = getNavidromeWebUrl("artist", artist.id);
   const subtitle = artist.albumCount
     ? `${artist.albumCount} album${artist.albumCount !== 1 ? "s" : ""}`
@@ -181,18 +215,27 @@ function ArtistItem({ artist, onAction }: { artist: Artist; onAction: () => void
     <List.Item
       icon={
         artist.coverArt
-          ? { source: getCoverArtUrl(artist.coverArt), mask: "RoundedRectangle" }
+          ? {
+              source: getCoverArtUrl(artist.coverArt),
+              mask: "RoundedRectangle",
+            }
           : Icon.PersonCircle
       }
       title={artist.name}
       subtitle={subtitle}
       accessories={[
-        ...(artist.starred ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }] : []),
+        ...(artist.starred
+          ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }]
+          : []),
         { tag: { value: "Artist", color: Color.Purple } },
       ]}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser title="Open in Navidrome" url={url} onOpen={onAction} />
+          <Action.OpenInBrowser
+            title="Open in Navidrome"
+            url={url}
+            onOpen={onAction}
+          />
           <Action.CopyToClipboard
             title="Copy Artist Name"
             content={artist.name}
@@ -209,7 +252,13 @@ function ArtistItem({ artist, onAction }: { artist: Artist; onAction: () => void
   );
 }
 
-function AlbumItem({ album, onAction }: { album: Album; onAction: () => void }) {
+function AlbumItem({
+  album,
+  onAction,
+}: {
+  album: Album;
+  onAction: () => void;
+}) {
   const url = getNavidromeWebUrl("album", album.id);
   const details: string[] = [];
   if (album.artist) details.push(album.artist);
@@ -225,13 +274,19 @@ function AlbumItem({ album, onAction }: { album: Album; onAction: () => void }) 
       title={album.name}
       subtitle={details.join(" · ")}
       accessories={[
-        ...(album.starred ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }] : []),
+        ...(album.starred
+          ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }]
+          : []),
         ...(album.songCount ? [{ text: `${album.songCount} tracks` }] : []),
         { tag: { value: "Album", color: Color.Blue } },
       ]}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser title="Open in Navidrome" url={url} onOpen={onAction} />
+          <Action.OpenInBrowser
+            title="Open in Navidrome"
+            url={url}
+            onOpen={onAction}
+          />
           <Action.CopyToClipboard
             title="Copy Album Name"
             content={album.name}
@@ -266,13 +321,19 @@ function SongItem({ song, onAction }: { song: Song; onAction: () => void }) {
       title={song.title}
       subtitle={details.join(" · ")}
       accessories={[
-        ...(song.starred ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }] : []),
+        ...(song.starred
+          ? [{ icon: { source: Icon.Star, tintColor: Color.Yellow } }]
+          : []),
         ...(song.duration ? [{ text: formatDuration(song.duration) }] : []),
         { tag: { value: "Song", color: Color.Green } },
       ]}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser title="Open Album in Navidrome" url={url} onOpen={onAction} />
+          <Action.OpenInBrowser
+            title="Open Album in Navidrome"
+            url={url}
+            onOpen={onAction}
+          />
           <Action.CopyToClipboard
             title="Copy Song Title"
             content={song.title}

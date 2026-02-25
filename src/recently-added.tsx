@@ -1,6 +1,18 @@
-import { ActionPanel, Action, Grid, Icon, showToast, Toast } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  Grid,
+  Icon,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { useCachedPromise } from "@raycast/utils";
-import { getRecentlyAdded, getCoverArtUrl, getNavidromeWebUrl, type Album } from "./api";
+import {
+  getRecentlyAdded,
+  getCoverArtUrl,
+  getNavidromeWebUrl,
+  type Album,
+} from "./api";
 
 export default function RecentlyAddedCommand() {
   const { data, isLoading } = useCachedPromise(
@@ -20,7 +32,11 @@ export default function RecentlyAddedCommand() {
   );
 
   return (
-    <Grid isLoading={isLoading} columns={5} searchBarPlaceholder="Filter recently added albums...">
+    <Grid
+      isLoading={isLoading}
+      columns={5}
+      searchBarPlaceholder="Filter recently added albums..."
+    >
       {!data || data.length === 0
         ? !isLoading && (
             <Grid.EmptyView
@@ -39,7 +55,11 @@ function AlbumGridItem({ album }: { album: Album }) {
 
   return (
     <Grid.Item
-      content={album.coverArt ? { source: getCoverArtUrl(album.coverArt, 300) } : Icon.Music}
+      content={
+        album.coverArt
+          ? { source: getCoverArtUrl(album.coverArt, 300) }
+          : Icon.Music
+      }
       title={album.name}
       subtitle={album.artist || ""}
       actions={

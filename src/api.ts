@@ -78,7 +78,10 @@ function getBaseUrl(): string {
   return serverUrl.replace(/\/+$/, "");
 }
 
-async function apiCall<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+async function apiCall<T>(
+  endpoint: string,
+  params: Record<string, string> = {},
+): Promise<T> {
   const baseUrl = getBaseUrl();
   const authParams = getAuthParams();
 
@@ -143,7 +146,11 @@ export async function search3(query: string): Promise<SearchResult> {
   };
 }
 
-export async function getAlbumList(type: string, size = 25, offset = 0): Promise<Album[]> {
+export async function getAlbumList(
+  type: string,
+  size = 25,
+  offset = 0,
+): Promise<Album[]> {
   const result = await apiCall<{
     albumList2?: {
       album?: Album | Album[];
@@ -173,7 +180,10 @@ export function getCoverArtUrl(coverArtId: string, size = 100): string {
   return `${baseUrl}/rest/getCoverArt?${authParams.toString()}`;
 }
 
-export function getNavidromeWebUrl(type: "artist" | "album" | "song", id: string): string {
+export function getNavidromeWebUrl(
+  type: "artist" | "album" | "song",
+  id: string,
+): string {
   const baseUrl = getBaseUrl();
 
   switch (type) {
